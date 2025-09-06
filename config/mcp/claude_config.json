@@ -1,0 +1,114 @@
+{
+  "mcpServers": {
+    "serena": {
+      "command": "npx",
+      "args": ["-y", "@serena/mcp-server"],
+      "description": "Serena MCP - プロジェクト記憶・セッション永続化・シンボル操作",
+      "required": true,
+      "purpose": "SEOシステムの進行状況管理、顧客情報の永続化、記事作成セッションの保持",
+      "usage": [
+        "記事作成進行状況の記憶",
+        "顧客プロンプトの保存・取得",
+        "品質チェック結果の履歴管理",
+        "プロジェクト全体のコンテキスト管理"
+      ],
+      "env": {}
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@context7/mcp-server"],
+      "description": "Context7 MCP - 公式ライブラリドキュメント参照・フレームワークパターン",
+      "required": false,
+      "purpose": "記事作成時の技術的根拠・公式情報の取得、業界標準パターンの参照",
+      "usage": [
+        "業界標準・ベストプラクティスの参照",
+        "技術的内容の正確性確保",
+        "公式ドキュメントからの引用",
+        "専門用語の正確な使用"
+      ],
+      "env": {}
+    },
+    "sequential": {
+      "command": "npx",
+      "args": ["-y", "@sequential-thinking/mcp-server"],
+      "description": "Sequential MCP - 段階的思考・複雑な分析・品質検証",
+      "required": true,
+      "purpose": "11ステップワークフローの体系的実行、記事品質の段階的分析",
+      "usage": [
+        "11ステップ記事作成プロセスの管理",
+        "品質検証の段階的実行",
+        "複雑な記事構造の分析",
+        "仮説検証による品質向上"
+      ],
+      "env": {}
+    },
+    "morphllm": {
+      "command": "npx", 
+      "args": ["-y", "@morphllm-fast-apply/mcp-server"],
+      "description": "Morphllm MCP - 大量テキスト処理・パターン適用・効率化",
+      "required": false,
+      "purpose": "記事テンプレートの一括適用、大量記事の効率的処理",
+      "usage": [
+        "記事テンプレートの一括適用",
+        "複数記事の統一フォーマット適用",
+        "大量テキストの効率的編集",
+        "パターンベースの記事修正"
+      ],
+      "env": {}
+    },
+    "magic": {
+      "command": "npx",
+      "args": ["-y", "@magic/21st-component-builder"],
+      "description": "Magic MCP - UIコンポーネント生成（記事管理画面用）",
+      "required": false,
+      "purpose": "SEOシステム管理画面のUI構築、記事プレビュー機能",
+      "usage": [
+        "記事管理ダッシュボードUI",
+        "品質チェック結果の可視化",
+        "顧客別記事一覧表示",
+        "プロンプト生成フォーム"
+      ],
+      "env": {}
+    }
+  },
+  "seoSystemConfig": {
+    "coreRequiredMcps": [
+      "serena",
+      "sequential"
+    ],
+    "optionalMcps": [
+      "context7",
+      "morphllm", 
+      "magic"
+    ],
+    "mcpUsageByCommand": {
+      "/seo:setup": ["serena"],
+      "/seo:create": ["serena", "sequential", "context7"],
+      "/seo:validate": ["sequential", "serena"],
+      "/seo:customer": ["serena"],
+      "/seo:keywords": ["serena"],
+      "/seo:rules": [],
+      "/seo:checklist": ["sequential"],
+      "/seo:templates": ["serena"],
+      "/seo:help": []
+    },
+    "workflowMcpMapping": {
+      "phase1_data_preparation": ["serena"],
+      "phase2_content_structuring": ["serena", "context7"],
+      "phase3_article_creation": ["sequential", "serena", "context7"],
+      "phase4_quality_assurance": ["sequential", "serena"]
+    }
+  },
+  "installationInstructions": {
+    "requiredNodeVersion": ">=16.0.0",
+    "installCommands": [
+      "npm install -g @serena/mcp-server",
+      "npm install -g @sequential-thinking/mcp-server"
+    ],
+    "optionalCommands": [
+      "npm install -g @context7/mcp-server",
+      "npm install -g @morphllm-fast-apply/mcp-server",
+      "npm install -g @magic/21st-component-builder"
+    ]
+  }
+}

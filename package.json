@@ -1,0 +1,26 @@
+{
+  "name": "seo-article-system",
+  "version": "1.0.0",
+  "description": "Professional SEO article creation system with 11-step workflow",
+  "main": "tools/excel_analyzer.js",
+  "scripts": {
+    "setup": "node tools/excel_analyzer.js",
+    "create": "node tools/article_generator.js",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [
+    "seo",
+    "article",
+    "automation",
+    "excel",
+    "content-creation"
+  ],
+  "author": "Claude SEO System",
+  "license": "MIT",
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
