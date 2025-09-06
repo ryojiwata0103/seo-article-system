@@ -1,0 +1,62 @@
+#!/usr/bin/env node
+
+/**
+ * SEO Keywords Info Command
+ * Usage: keywords [G-ID] [content-number]
+ */
+
+const path = require('path');
+const fs = require('fs');
+
+// SEOシステムのプロジェクトルートを決定
+const SEO_SYSTEM_ROOT = process.env.SEO_SYSTEM_ROOT || 
+    (fs.existsSync('/home/general/seo-article-system') ? '/home/general/seo-article-system' : 
+     path.resolve(process.cwd(), 'seo-article-system'));
+
+if (!fs.existsSync(SEO_SYSTEM_ROOT)) {
+    console.error('❌ SEOシステムが見つかりません。');
+    process.exit(1);
+}
+
+// SEOコマンドを動的にロード
+const SEOCommands = require(path.join(SEO_SYSTEM_ROOT, 'tools', 'seo_commands.js'));
+const seoCommands = new SEOCommands();
+
+async function main() {
+    const args = process.argv.slice(2);
+    
+    if (args.length < 2) {
+        console.log(`
+🎯 SEO Keywords コマンド
+
+使用方法:
+  keywords [G-ID] [コンテンツ番号]
+
+例:
+  keywords G0016374 01
+  keywords G0016374 02
+        `);
+        process.exit(0);
+    }
+
+    const [gid, contentNumber] = args;
+    console.log(`🎯 キーワード情報: ${gid} - コンテンツ${contentNumber}`);
+    
+    try {
+        const result = await seoCommands.keywords(gid, contentNumber);
+        if (result.success) {
+            console.log(`✅ キーワード情報取得完了`);
+            // キーワード情報は既にコンソールに出力されている
+        } else {
+            console.error(`❌ キーワード情報取得失敗: ${result.error}`);
+            process.exit(1);
+        }
+    } catch (error) {
+        console.error(`❌ 実行エラー: ${error.message}`);
+        process.exit(1);
+    }
+}
+
+if (require.main === module) {
+    main();
+}

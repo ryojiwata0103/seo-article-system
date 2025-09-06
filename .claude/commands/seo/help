@@ -1,0 +1,42 @@
+#!/usr/bin/env node
+
+/**
+ * SEO Help Command
+ * Usage: help
+ */
+
+function main() {
+    console.log(`
+🚀 SEO スラッシュコマンドシステム
+
+Claude Code統合 SEO記事自動生成・品質管理システム
+
+📋 利用可能コマンド:
+
+  setup [エクセルファイルパス]     # システム初期化
+  create [G-ID] [コンテンツ番号]    # 記事作成プロンプト生成
+  validate [記事ファイルパス]      # 記事品質検証
+  customer [G-ID]                # 顧客情報表示
+  keywords [G-ID] [コンテンツ番号] # キーワード情報表示
+  help                           # このヘルプを表示
+
+🔄 基本ワークフロー:
+
+1. setup "/path/to/発注書.xlsx"     # エクセルから顧客情報を解析
+2. customer G0016374              # 顧客理解プロンプトを確認
+3. keywords G0016374 01           # キーワード情報を確認
+4. create G0016374 01             # 記事作成プロンプトを生成
+5. validate "/path/to/article.md" # 記事品質をチェック
+
+📖 詳細情報:
+  GitHub: https://github.com/ryojiwata0103/seo-article-system
+  ドキュメント: docs/SEO_SLASH_COMMANDS_DESIGN.md
+
+🤝 サポート:
+  GitHub Issues で問題報告・機能要望をお願いします
+    `);
+}
+
+if (require.main === module) {
+    main();
+}

@@ -1,0 +1,66 @@
+#!/usr/bin/env node
+
+/**
+ * SEO Article Validate Command
+ * Usage: validate [article-file-path]
+ */
+
+const path = require('path');
+const fs = require('fs');
+
+// SEOシステムのプロジェクトルートを決定
+const SEO_SYSTEM_ROOT = process.env.SEO_SYSTEM_ROOT || 
+    (fs.existsSync('/home/general/seo-article-system') ? '/home/general/seo-article-system' : 
+     path.resolve(process.cwd(), 'seo-article-system'));
+
+if (!fs.existsSync(SEO_SYSTEM_ROOT)) {
+    console.error('❌ SEOシステムが見つかりません。');
+    console.error('   まず setup コマンドを実行してください。');
+    process.exit(1);
+}
+
+// SEOコマンドを動的にロード
+const SEOCommands = require(path.join(SEO_SYSTEM_ROOT, 'tools', 'seo_commands.js'));
+const seoCommands = new SEOCommands();
+
+async function main() {
+    const args = process.argv.slice(2);
+    
+    if (args.length === 0) {
+        console.log(`
+🔍 SEO Validate コマンド
+
+使用方法:
+  validate [記事ファイルパス]
+
+例:
+  validate "./generated_article.md"
+  validate "/path/to/article.md"
+        `);
+        process.exit(0);
+    }
+
+    const articlePath = args[0];
+    console.log(`🔍 記事品質チェック: ${articlePath}`);
+    
+    try {
+        const result = await seoCommands.validate(articlePath);
+        if (result.success) {
+            console.log(`✅ バリデーション完了`);
+            console.log(`📊 結果:`);
+            console.log(JSON.stringify(result.validationResult, null, 2));
+            console.log(`\n次のステップ:`);
+            console.log(`  checklist "${articlePath}" # 詳細品質チェック`);
+        } else {
+            console.error(`❌ バリデーション失敗: ${result.error}`);
+            process.exit(1);
+        }
+    } catch (error) {
+        console.error(`❌ 実行エラー: ${error.message}`);
+        process.exit(1);
+    }
+}
+
+if (require.main === module) {
+    main();
+}

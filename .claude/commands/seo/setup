@@ -1,0 +1,67 @@
+#!/usr/bin/env node
+
+/**
+ * SEO System Setup Command
+ * Usage: setup [excel-file-path]
+ */
+
+const path = require('path');
+const fs = require('fs');
+
+// SEOシステムのプロジェクトルートを決定
+const SEO_SYSTEM_ROOT = process.env.SEO_SYSTEM_ROOT || 
+    (fs.existsSync('/home/general/seo-article-system') ? '/home/general/seo-article-system' : 
+     path.resolve(process.cwd(), 'seo-article-system'));
+
+if (!fs.existsSync(SEO_SYSTEM_ROOT)) {
+    console.error('❌ SEOシステムが見つかりません。');
+    console.error('   以下をクローンしてください:');
+    console.error('   git clone https://github.com/ryojiwata0103/seo-article-system.git');
+    process.exit(1);
+}
+
+// SEOコマンドを動的にロード
+const SEOCommands = require(path.join(SEO_SYSTEM_ROOT, 'tools', 'seo_commands.js'));
+const seoCommands = new SEOCommands();
+
+async function main() {
+    const args = process.argv.slice(2);
+    
+    if (args.length === 0) {
+        console.log(`
+🔧 SEO Setup コマンド
+
+使用方法:
+  setup [エクセルファイルパス]
+
+例:
+  setup "/path/to/発注書.xlsx"
+  setup "./G0016374_jinius株式会社様_発注書.xlsx"
+        `);
+        process.exit(0);
+    }
+
+    const excelPath = args[0];
+    console.log(`🚀 SEO System Setup: ${excelPath}`);
+    
+    try {
+        const result = await seoCommands.setup(excelPath);
+        if (result.success) {
+            console.log(`✅ セットアップ完了`);
+            console.log(`📁 G-ID: ${result.gid}`);
+            console.log(`📁 出力先: ${result.clientDir}`);
+            console.log(`\n次のステップ:`);
+            console.log(`  create ${result.gid} 01`);
+        } else {
+            console.error(`❌ セットアップ失敗: ${result.error}`);
+            process.exit(1);
+        }
+    } catch (error) {
+        console.error(`❌ 実行エラー: ${error.message}`);
+        process.exit(1);
+    }
+}
+
+if (require.main === module) {
+    main();
+}
